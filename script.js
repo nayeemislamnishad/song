@@ -5,7 +5,7 @@ document.getElementById('uploadBtn').addEventListener('click', function() {
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const fileType = file.type.split('/')[0]; // Get the file type (image, video, or audio)
+        const fileType = file.type.split('/')[0]; // Get the file type (image or video)
         let mediaElement;
 
         if (fileType === 'image') {
@@ -15,12 +15,31 @@ document.getElementById('uploadBtn').addEventListener('click', function() {
             mediaElement = document.createElement('video');
             mediaElement.src = URL.createObjectURL(file); // Use Object URL for videos
             mediaElement.controls = true; // Show video controls
-        } else if (fileType === 'audio') {
-            mediaElement = document.createElement('audio');
-            mediaElement.src = URL.createObjectURL(file); // Use Object URL for audio
-            mediaElement.controls = true; // Show audio controls
         }
 
         gallery.appendChild(mediaElement); // Add media to gallery
+    }
+});
+
+// Handle YouTube link addition
+document.getElementById('addYoutubeBtn').addEventListener('click', function() {
+    const youtubeLink = document.getElementById('youtubeLinkInput').value;
+    const gallery = document.getElementById('gallery');
+
+    // Extract video ID from the YouTube link
+    const videoId = youtubeLink.split('v=')[1]?.split('&')[0];
+    if (videoId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.width = "100%";
+        iframe.height = "200px";
+        iframe.frameBorder = "0";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+
+        gallery.appendChild(iframe); // Add the embedded video to the gallery
+        document.getElementById('youtubeLinkInput').value = ''; // Clear the input
+    } else {
+        alert('Please enter a valid YouTube link');
     }
 });
