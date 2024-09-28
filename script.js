@@ -26,8 +26,10 @@ document.getElementById('addYoutubeBtn').addEventListener('click', function() {
     const youtubeLink = document.getElementById('youtubeLinkInput').value;
     const gallery = document.getElementById('gallery');
 
-    // Extract video ID from the YouTube link
-    const videoId = youtubeLink.split('v=')[1]?.split('&')[0];
+    // Use regex to extract the video ID from the YouTube link
+    const videoIdMatch = youtubeLink.match(/(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=))([a-zA-Z0-9_-]{11})/);
+    const videoId = videoIdMatch ? videoIdMatch[1] : null; // Extract the video ID
+
     if (videoId) {
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.youtube.com/embed/${videoId}`;
